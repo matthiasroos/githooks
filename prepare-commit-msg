@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$2" = "merge" ]; then
+	merge_msg=`cat .git/MERGE_MSG`
+	merged_branch=`echo $merge_msg | cut -d' ' -f3`
+	current_branch="$(git rev-parse --abbrev-ref HEAD)"
+	if [[ $merged_branch =~ "experimental" ]]; then
+		echo "You are trying to merge $merged_branch into $current_branch"	
+		echo "Merging $merged_branch in any branch is not allowed"
+		#echo "Merge halted, please abort merge with 'git reset --merge'"
+		exit 1
+	fi
+fi
